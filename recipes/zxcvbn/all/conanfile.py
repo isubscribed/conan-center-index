@@ -53,6 +53,8 @@ class ZxcvbnConan(ConanFile):
         
     def generate(self):
         tc = CMakeToolchain(self)
+        if self.settings.os in ["iOS", "Android"]:
+            tc.preprocessor_definitions["USE_DICT_FILE"] = ""
         tc.generate()
 
     def _patch_if_exists(self, patch_name):
