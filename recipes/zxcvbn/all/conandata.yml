@@ -14,6 +14,3 @@ patches:
     - patch_file: "patches/2.5-0001-no-tests.patch"
       patch_description: "disable building of tests which are broken in the CMakeLists.txt"
       patch_type: "portability"
-    - patch_file: "patches/2.5-0002-no-crc64-verification.patch"
-      patch_description: "skip CRC64 verification when loading the external dictionary"
-      patch_type: "portability"
