@@ -18,10 +18,12 @@ class ZxcvbnConan(ConanFile):
     options = {
         "shared": [True, False],
         "fPIC": [True, False],
+        "use_dict_file": [True, False],
     }
     default_options = {
         "shared": False,
         "fPIC": True,
+        "use_dict_file": False,
     }
 
     def build_requirements(self):
@@ -50,10 +52,10 @@ class ZxcvbnConan(ConanFile):
 
     def layout(self):
         cmake_layout(self, build_folder="build")
-        
+
     def generate(self):
         tc = CMakeToolchain(self)
-        if self.settings.os in ["iOS", "Android"]:
+        if self.options.use_dict_file:
             tc.preprocessor_definitions["USE_DICT_FILE"] = ""
         tc.generate()
 
@@ -85,8 +87,13 @@ class ZxcvbnConan(ConanFile):
             copy(self, pattern, src=self.build_folder, dst=os.path.join(self.package_folder, "lib"), keep_path=False)
         for pattern in ["*.dll", "dictgen", "dictgen.exe"]:
             copy(self, pattern, src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False)
+        if self.options.use_dict_file:
+            copy(self, "zxcvbn.dict", src=self.build_folder, dst=os.path.join(self.package_folder, "bin"), keep_path=False)
 
     def package_info(self):
         self.cpp_info.libs = ["zxcvbn"]
+        if self.options.use_dict_file:
+            self.cpp_info.defines.append("USE_DICT_FILE")
+            self.cpp_info.bindirs = ["bin"]
         if self.settings.os in ["Linux", "FreeBSD"]:
             self.cpp_info.system_libs.append("m")
