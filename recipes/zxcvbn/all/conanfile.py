@@ -1,7 +1,7 @@
 from conan import ConanFile
 from conan.tools.build import cross_building
 from conan.tools.cmake import cmake_layout, CMake, CMakeToolchain
-from conan.tools.files import apply_conandata_patches, copy, download, get, patch, rm
+from conan.tools.files import apply_conandata_patches, copy, download, get, patch
 import os
 
 required_conan_version = ">=1.54.0"
@@ -62,7 +62,7 @@ class ZxcvbnConan(ConanFile):
     def _patch_if_exists(self, patch_name):
         patch_file=os.path.join(self.export_sources_folder, "patches", f"{self.version}-{patch_name}.patch")
         if os.path.exists(patch_file):
-            print(f"Applying the '{patch_name}' patch...")
+            self.output.info(f"Applying the '{patch_name}' patch...")
             patch(self, patch_file=patch_file)
 
     def _patch_sources(self):

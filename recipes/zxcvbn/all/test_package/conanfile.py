@@ -18,7 +18,7 @@ class ZxcvbnTestPackageConan(ConanFile):
         tc = CMakeToolchain(self)
         dep = self.dependencies[self.tested_reference_str]
         if dep.options.get_safe("use_dict_file"):
-            dict_path = os.path.join(dep.cpp_info.bindirs[0], "zxcvbn.dict")
+            dict_path = os.path.join(dep.package_folder, dep.cpp_info.bindirs[0], "zxcvbn.dict").replace("\\", "/")
             tc.preprocessor_definitions["ZXCVBN_DICT_FILE"] = f'"{dict_path}"'
         tc.generate()
 
