@@ -1,6 +1,7 @@
 from conan import ConanFile
 from conan.tools.build import cross_building
 from conan.tools.cmake import cmake_layout, CMake, CMakeToolchain
+from conan.tools.env import VirtualBuildEnv
 from conan.tools.files import apply_conandata_patches, copy, download, get, patch
 import os
 
@@ -54,6 +55,7 @@ class ZxcvbnConan(ConanFile):
         cmake_layout(self, build_folder="build")
 
     def generate(self):
+        VirtualBuildEnv(self).generate()
         tc = CMakeToolchain(self)
         if self.options.use_dict_file:
             tc.preprocessor_definitions["USE_DICT_FILE"] = ""
